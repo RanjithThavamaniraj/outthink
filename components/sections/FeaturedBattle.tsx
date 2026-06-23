@@ -111,7 +111,9 @@ export function FeaturedBattle() {
           </p>
         ) : (
           <>
-            <p className="text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted/80">
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.28em] text-human/80">
+              {featuredBattle.pillar}
+              <span className="mx-2 text-text-muted/30">·</span>
               {featuredBattle.category}
             </p>
 

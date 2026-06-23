@@ -7,18 +7,19 @@ export const stats = [
 export const mockOutthinkScore = { score: 7, total: 10 } as const;
 
 export const featuredBattle = {
-  category: "Creativity",
-  prompt: "Rebrand a declining neighborhood bookstore for the digital age.",
+  category: "Impossible Ideas",
+  pillar: "Creativity",
+  prompt: "Invent a product that solves a problem humans didn't know they had.",
   human: {
     name: "Maya Chen",
     answer:
-      "Turn it into a 'slow reading club' — no Wi-Fi, curated shelves by mood, and weekly author dinners. The scarcity of silence becomes the product.",
+      "The Apology Delay Box — a mailbox that holds your angry text for six hours and returns it rewritten by someone who loves you.",
     votes: 847,
   },
   ai: {
     name: "GPT-4o",
     answer:
-      "Launch a hybrid subscription: physical books delivered monthly plus an AI-curated reading companion app with personalized summaries and discussion prompts.",
+      "MoodSync Mirror: a smart mirror that adjusts lighting and plays affirmations based on biometric stress markers detected via camera.",
     votes: 612,
   },
 } as const;

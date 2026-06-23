@@ -50,11 +50,11 @@ export function ChallengeSection() {
             The arena
           </p>
           <h2 className="scanline-heading mt-3 font-display font-extrabold uppercase text-text-primary">
-            Choose your front
+            Pick your battleground
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-text-muted">
-            Pick a discipline. Judge blind. Discover whether human instinct or
-            machine logic wrote each answer.
+            Five forms of human intelligence. Each front is a different way to
+            challenge AI — foresight, reasoning, creativity, empathy, or wit.
           </p>
         </div>
       </FadeIn>

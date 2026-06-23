@@ -1,9 +1,9 @@
 export type CategoryId =
-  | "creativity"
-  | "storytelling"
-  | "humor"
-  | "business-ideas"
-  | "advertising";
+  | "sports-prediction"
+  | "mystery"
+  | "impossible-ideas"
+  | "human-insight"
+  | "humor";
 
 export type AnswerSlot = "A" | "B";
 
@@ -20,7 +20,11 @@ export interface ChallengeCategory {
   id: CategoryId;
   name: string;
   icon: string;
+  /** Intelligence pillar — e.g. Foresight, Reasoning. */
+  pillar: string;
   description: string;
+  /** Signature accent (hex) for node glow and connections. */
+  accent: string;
   /** Percent position within the selector canvas (0–100). */
   node: { x: number; y: number };
 }

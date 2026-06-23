@@ -29,8 +29,14 @@ type BattleViewProps = {
 function BattleHeader({ category }: { category: ChallengeCategory }) {
   return (
     <div className="mb-8 text-center sm:mb-10">
-      <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
-        <span className="mr-2 opacity-60">{category.icon}</span>
+      <p
+        className="font-mono text-[10px] uppercase tracking-[0.28em]"
+        style={{ color: category.accent }}
+      >
+        {category.pillar}
+      </p>
+      <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.24em] text-text-muted">
+        <span className="mr-2">{category.icon}</span>
         {category.name}
       </p>
     </div>
@@ -192,7 +198,7 @@ export function BattleView({
                 onClick={onChooseCategory}
                 className="min-w-[11rem] border border-border px-6 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted transition-colors hover:border-border-hover hover:text-text-primary"
               >
-                Change front
+                Change battleground
               </button>
             </div>
           </motion.div>
