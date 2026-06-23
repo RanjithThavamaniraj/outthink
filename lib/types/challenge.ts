@@ -45,5 +45,6 @@ export interface VoteResult {
   battleId: string;
   pickedWinner: AnswerSlot;
   humanAnswer: AnswerSlot;
-  guessedHumanCorrectly: boolean;
+  crowdFavorite: AnswerSlot;
+  pickedStrongerCorrectly: boolean;
 }

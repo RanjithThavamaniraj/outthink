@@ -5,12 +5,20 @@ import { challengeService } from "@/lib/services/challenge-service";
 import type {
   AnswerSlot,
   BattlePhase,
-  CategoryId,
   CategoryStatistics,
   ChallengeBattle,
   ChallengeCategory,
   VoteResult,
 } from "@/lib/types/challenge";
+
+function crowdFavoriteFromStats(
+  stats: CategoryStatistics,
+  humanAnswer: AnswerSlot,
+): AnswerSlot {
+  const optionAPercent =
+    humanAnswer === "A" ? stats.humanWinPercent : stats.aiWinPercent;
+  return optionAPercent >= 100 - optionAPercent ? "A" : "B";
+}
 
 export function useChallengeFlow() {
   const [phase, setPhase] = useState<BattlePhase>("select");
@@ -31,41 +39,27 @@ export function useChallengeFlow() {
       ]);
       setBattle(nextBattle);
       setStats(nextStats);
-      setPhase("category");
+      setPhase("vote");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const advance = useCallback(() => {
-    setPhase((current) => {
-      const order: BattlePhase[] = [
-        "select",
-        "category",
-        "prompt",
-        "answer-a",
-        "answer-b",
-        "vote",
-        "reveal",
-      ];
-      const idx = order.indexOf(current);
-      return order[Math.min(idx + 1, order.length - 1)];
-    });
-  }, []);
-
   const submitVote = useCallback(
     (pickedWinner: AnswerSlot) => {
-      if (!battle) return;
+      if (!battle || !stats) return;
+      const crowdFavorite = crowdFavoriteFromStats(stats, battle.humanAnswer);
       const result: VoteResult = {
         battleId: battle.id,
         pickedWinner,
         humanAnswer: battle.humanAnswer,
-        guessedHumanCorrectly: pickedWinner === battle.humanAnswer,
+        crowdFavorite,
+        pickedStrongerCorrectly: pickedWinner === crowdFavorite,
       };
       setVoteResult(result);
       setPhase("reveal");
     },
-    [battle],
+    [battle, stats],
   );
 
   const reset = useCallback(() => {
@@ -85,7 +79,7 @@ export function useChallengeFlow() {
         category.id,
       );
       setBattle(nextBattle);
-      setPhase("category");
+      setPhase("vote");
     } finally {
       setLoading(false);
     }
@@ -99,7 +93,6 @@ export function useChallengeFlow() {
     voteResult,
     loading,
     selectCategory,
-    advance,
     submitVote,
     reset,
     playAgain,

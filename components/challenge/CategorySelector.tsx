@@ -21,9 +21,7 @@ export function CategorySelector({
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
-    <div
-      className="relative mx-auto aspect-[4/3] w-full max-w-3xl sm:aspect-[16/10]"
-    >
+    <div className="relative mx-auto aspect-[4/3] w-full max-w-3xl max-h-[min(72vw,22rem)] sm:aspect-[16/10] sm:max-h-[min(52vw,24rem)]">
       <NeuralNodeCanvas
         categories={categories}
         selectedId={selectedId}

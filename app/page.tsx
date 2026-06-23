@@ -6,18 +6,20 @@ import { Stats } from "@/components/sections/Stats";
 import { ChallengeSection } from "@/components/sections/Challenge";
 import { FeaturedBattle } from "@/components/sections/FeaturedBattle";
 import { Leaderboard } from "@/components/sections/Leaderboard";
+import { LeaderboardFull } from "@/components/sections/LeaderboardFull";
 
 export default function Home() {
   return (
     <>
       <PageVisualLayers />
       <Header />
-      <main className="relative z-[1] flex-1">
+      <main className="site-experience relative z-[1] flex-1">
         <Hero />
         <Stats />
-        <ChallengeSection />
         <FeaturedBattle />
+        <ChallengeSection />
         <Leaderboard />
+        <LeaderboardFull />
       </main>
       <Footer />
     </>

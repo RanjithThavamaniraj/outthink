@@ -153,8 +153,8 @@ body {
 }
 
 .hero-challenge-invite:hover .hero-challenge-invite-indicator {
-  opacity: 0.9;
-  box-shadow: 0 0 16px rgba(74, 222, 128, 0.24);
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.55);
 }
 
 .hero-challenge-invite:hover .hero-challenge-invite-indicator::after {
@@ -185,24 +185,99 @@ body {
   }
 }
 
+@keyframes hero-invite-shimmer-move {
+  0% {
+    background-position: 220% center;
+  }
+  100% {
+    background-position: -220% center;
+  }
+}
+
+@keyframes hero-invite-sweep-line {
+  0% {
+    left: -32%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: 105%;
+    opacity: 0;
+  }
+}
+
 .hero-challenge-invite {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: clamp(11px, 1.1vw, 13px);
+  font-size: clamp(12px, 1.2vw, 14px);
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(245, 245, 245, 0.55);
   text-decoration: none;
-  padding-right: 0.35em;
-  transition: color 0.45s ease;
+  padding: 0.5rem 1rem 0;
+  padding-right: calc(1rem + 0.35em);
   cursor: pointer;
 }
 
-.hero-challenge-invite:hover {
-  color: rgba(245, 245, 245, 0.84);
+.hero-challenge-invite-shimmer {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  background-image: linear-gradient(
+    110deg,
+    rgba(245, 245, 245, 0.42) 0%,
+    rgba(245, 245, 245, 0.42) 36%,
+    #4ade80 44%,
+    #f5f5f5 50%,
+    #86efac 54%,
+    #60a5fa 58%,
+    rgba(245, 245, 245, 0.42) 66%,
+    rgba(245, 245, 245, 0.42) 100%
+  );
+  background-size: 240% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hero-invite-shimmer-move 2.2s linear infinite;
+}
+
+.hero-challenge-invite-shimmer::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -32%;
+  width: 30%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(74, 222, 128, 0.25),
+    #4ade80,
+    #f5f5f5,
+    #86efac,
+    rgba(74, 222, 128, 0.25),
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+  animation: hero-invite-sweep-line 2.2s linear infinite;
+  pointer-events: none;
+}
+
+.hero-challenge-invite:hover .hero-challenge-invite-shimmer {
+  animation-duration: 1.4s;
+}
+
+.hero-challenge-invite:hover .hero-challenge-invite-shimmer::after {
+  animation-duration: 1.4s;
 }
 
 .hero-challenge-invite-indicator {
@@ -212,11 +287,12 @@ body {
   height: 2.25rem;
   background: linear-gradient(
     to bottom,
-    rgba(245, 245, 245, 0.5) 0%,
-    rgba(245, 245, 245, 0.14) 65%,
+    rgba(74, 222, 128, 0.65) 0%,
+    rgba(74, 222, 128, 0.2) 65%,
     transparent 100%
   );
-  opacity: 0.42;
+  opacity: 0.75;
+  box-shadow: 0 0 14px rgba(74, 222, 128, 0.35);
   transition:
     opacity 0.45s ease,
     box-shadow 0.45s ease;
@@ -228,10 +304,11 @@ body {
   position: absolute;
   left: 50%;
   bottom: -1px;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: rgba(245, 245, 245, 0.45);
+  background: rgba(74, 222, 128, 0.75);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
   transform: translateX(-50%);
   animation: hero-challenge-invite-drift 3s ease-in-out infinite;
 }
@@ -471,6 +548,79 @@ body {
 .footer-wordmark-think {
   display: inline-block;
   color: var(--human);
+}
+
+@keyframes battle-vs-pulse {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.48;
+  }
+}
+
+.battle-vs-badge {
+  animation: battle-vs-pulse 3s ease-in-out infinite;
+}
+
+@keyframes reveal-identity-glow {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  55% {
+    filter: drop-shadow(0 0 16px rgba(74, 222, 128, 0.28));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.14));
+  }
+}
+
+.reveal-identity-glow {
+  animation: reveal-identity-glow 0.9s ease-out forwards;
+}
+
+.site-section {
+  isolation: isolate;
+}
+
+.section-flow-seam {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  height: 1px;
+  width: min(100%, 48rem);
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(74, 222, 128, 0.12) 22%,
+    rgba(245, 245, 245, 0.08) 50%,
+    rgba(96, 165, 250, 0.12) 78%,
+    transparent 100%
+  );
+  opacity: 0.65;
+}
+
+.site-experience {
+  background:
+    radial-gradient(
+      ellipse 70% 45% at 50% -5%,
+      rgba(74, 222, 128, 0.035) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 55% 35% at 100% 40%,
+      rgba(96, 165, 250, 0.025) 0%,
+      transparent 50%
+    ),
+    var(--background);
 }
 
 .wallet-pass {

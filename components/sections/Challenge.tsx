@@ -20,7 +20,6 @@ export function ChallengeSection() {
     voteResult,
     loading,
     selectCategory,
-    advance,
     submitVote,
     reset,
     playAgain,
@@ -33,7 +32,7 @@ export function ChallengeSection() {
   const inBattle = phase !== "select";
 
   return (
-    <Section id="challenge" className="relative overflow-hidden bg-background">
+    <Section id="challenge" className="relative overflow-hidden">
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden
@@ -48,26 +47,26 @@ export function ChallengeSection() {
       <FadeIn>
         <div className="relative mx-auto max-w-3xl text-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted">
-            Outthink V1
+            The arena
           </p>
-          <h2 className="scanline-heading mt-4 font-display font-extrabold uppercase text-text-primary">
+          <h2 className="scanline-heading mt-3 font-display font-extrabold uppercase text-text-primary">
             Choose your front
           </h2>
-          <p className="mt-4 text-sm leading-relaxed text-text-muted sm:text-base">
-            Select a discipline. Read the battlefield. Decide which mind wins —
-            human or machine.
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-text-muted">
+            Pick a discipline. Judge blind. Discover whether human instinct or
+            machine logic wrote each answer.
           </p>
         </div>
       </FadeIn>
 
-      <div className="relative mt-14 sm:mt-16">
+      <div className="relative mt-10 sm:mt-12">
         <AnimatePresence mode="wait">
           {!inBattle ? (
             <motion.div
               key="selector"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.4 }}
             >
               {categories.length > 0 && (
@@ -79,7 +78,7 @@ export function ChallengeSection() {
                 />
               )}
               {loading && (
-                <p className="mt-8 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
+                <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
                   Loading battle…
                 </p>
               )}
@@ -90,10 +89,10 @@ export function ChallengeSection() {
             stats && (
               <motion.div
                 key="battle"
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               >
                 <BattleView
                   phase={phase}
@@ -101,7 +100,6 @@ export function ChallengeSection() {
                   battle={battle}
                   stats={stats}
                   voteResult={voteResult}
-                  onAdvance={advance}
                   onVote={submitVote}
                   onPlayAgain={playAgain}
                   onChooseCategory={reset}

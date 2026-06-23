@@ -156,7 +156,7 @@ export function TypingDuel({
             transition={{ duration: 0.35 }}
             className={
               bare
-                ? "grid grid-cols-2 gap-10 sm:gap-16"
+                ? "grid grid-cols-2 gap-8 sm:gap-12"
                 : "grid grid-cols-[1fr_1px_1fr] gap-0"
             }
           >

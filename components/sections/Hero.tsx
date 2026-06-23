@@ -10,13 +10,13 @@ export function Hero() {
   return (
     <section
       id="hero-section"
-      className="relative min-h-screen overflow-hidden pb-16 pt-28 sm:pt-32 sm:pb-20"
+      className="relative min-h-[min(100svh,52rem)] overflow-hidden pb-12 pt-24 sm:pb-14 sm:pt-28"
     >
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute left-1/2 top-[34%] h-[min(90vh,52rem)] w-[min(200vw,96rem)] -translate-x-1/2 -translate-y-1/2 scale-[2.5] sm:scale-[2.75] lg:scale-[3]">
+        <div className="absolute left-1/2 top-[34%] h-[min(85vh,48rem)] w-[min(200vw,96rem)] -translate-x-1/2 -translate-y-1/2 scale-[2.5] sm:scale-[2.75] lg:scale-[3]">
           <Image
             src="/hero-hands.png"
             alt=""
@@ -33,51 +33,51 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
 
-      <div className="relative z-10 flex min-h-[calc(100vh-7rem)] flex-col items-center justify-center px-6 py-8 text-center sm:px-10 sm:py-10">
+      <div className="relative z-10 flex flex-col items-center justify-center px-6 py-6 text-center sm:px-10 sm:py-8">
         <div className="flex w-full max-w-3xl flex-col items-center">
           <FadeIn delay={0.15}>
-            <h1 className="relative max-w-5xl px-2 py-8 font-display text-4xl font-extrabold uppercase leading-[1.02] tracking-tight sm:px-6 sm:py-10 sm:text-5xl md:py-12 md:text-6xl lg:text-7xl xl:text-[5.25rem]">
+            <h1 className="relative max-w-5xl px-2 py-3 font-display text-4xl font-extrabold uppercase leading-[1.02] tracking-tight sm:px-4 sm:py-4 sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.25rem]">
               <span className="text-text-primary/75">Can You </span>
               <span className="hero-title-shimmer relative z-10">Outthink</span>
               <span className="text-text-primary/75"> AI?</span>
             </h1>
           </FadeIn>
 
-          <FadeIn delay={0.28}>
-            <LiveMomentumIndicator
-              bare
-              advantage
-              className="mt-1 flex justify-center"
-            />
-          </FadeIn>
-
           <FadeIn
-            delay={0.42}
-            className="mt-16 w-full max-w-2xl sm:mt-20 lg:mt-24"
+            delay={0.38}
+            className="mt-8 w-full max-w-2xl sm:mt-10"
           >
             <TypingDuel bare />
           </FadeIn>
 
           <motion.a
-            href="#challenge"
+            href="#featured"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.58, duration: 1.1 }}
-            className="hero-challenge-invite mt-8 sm:mt-10"
-            aria-label="Ready to Outthink?"
+            transition={{ delay: 0.52, duration: 1.1 }}
+            className="hero-challenge-invite mt-7 sm:mt-8"
+            aria-label="Ready to Outthink? Begin the challenge"
           >
-            Ready to Outthink?
+            <span className="hero-challenge-invite-shimmer">
+              Ready to Outthink?
+            </span>
             <span className="hero-challenge-invite-indicator" aria-hidden />
           </motion.a>
 
-          <FadeIn delay={0.62}>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-text-muted/65 sm:mt-4">
-              Daily battles between humans and AI. Compete, vote, and prove human
-              creativity still matters.
-            </p>
+          <FadeIn delay={0.48} className="mt-4">
+            <LiveMomentumIndicator
+              bare
+              advantage
+              className="flex justify-center opacity-80"
+            />
           </FadeIn>
         </div>
       </div>
+
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent"
+        aria-hidden
+      />
     </section>
   );
 }

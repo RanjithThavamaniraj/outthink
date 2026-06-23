@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { stats } from "@/lib/data";
@@ -39,7 +39,7 @@ export function Stats() {
   const winRate = useAnimatedStat(stats[2].value, 1, isInView);
 
   return (
-    <Section id="stats" className="!py-12 sm:!py-14">
+    <Section id="stats" className="!py-8 sm:!py-10" flow={false}>
       <FadeIn>
         <div
           ref={ref}
@@ -50,7 +50,7 @@ export function Stats() {
             Live field
           </span>
 
-          <p className="mt-5 leading-loose text-text-muted/80 sm:mt-6">
+          <p className="mt-4 leading-loose text-text-muted/80 sm:mt-5">
             <span className="text-text-primary/90">{humans}+</span> minds
             competing
             <span className="mx-2 text-text-muted/30">·</span>

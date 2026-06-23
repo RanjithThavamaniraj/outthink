@@ -1,175 +1,235 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { featuredBattle } from "@/lib/data";
+import { BattleVersusLayout } from "@/components/challenge/BattleVersusLayout";
+import { BlindOptionColumn } from "@/components/challenge/BlindOptionColumn";
+import { CrowdPreference } from "@/components/challenge/CrowdPreference";
+import { OutthinkScore } from "@/components/challenge/OutthinkScore";
+import { featuredBattle, mockOutthinkScore } from "@/lib/data";
+import type { AnswerSlot } from "@/lib/types/challenge";
 
-type VoteChoice = "human" | "ai" | null;
+type SlotSide = "human" | "ai";
+
+function crowdFavoriteFromPercents(
+  optionAPercent: number,
+  optionBPercent: number,
+): AnswerSlot {
+  return optionAPercent >= optionBPercent ? "A" : "B";
+}
 
 export function FeaturedBattle() {
-  const [vote, setVote] = useState<VoteChoice>(null);
+  const [picked, setPicked] = useState<AnswerSlot | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [slotAssignment, setSlotAssignment] = useState<{
+    A: SlotSide;
+    B: SlotSide;
+  } | null>(null);
+
+  useEffect(() => {
+    setSlotAssignment(
+      Math.random() < 0.5
+        ? { A: "human", B: "ai" }
+        : { A: "ai", B: "human" },
+    );
+  }, []);
+
   const totalVotes = featuredBattle.human.votes + featuredBattle.ai.votes;
   const humanPercent = Math.round(
     (featuredBattle.human.votes / totalVotes) * 100,
   );
   const aiPercent = 100 - humanPercent;
 
+  const optionAPercent = slotAssignment
+    ? slotAssignment.A === "human"
+      ? humanPercent
+      : aiPercent
+    : 0;
+  const optionBPercent = 100 - optionAPercent;
+  const crowdFavorite = crowdFavoriteFromPercents(
+    optionAPercent,
+    optionBPercent,
+  );
+
+  const answerFor = (slot: AnswerSlot) => {
+    if (!slotAssignment) return "";
+    const side = slotAssignment[slot];
+    return side === "human"
+      ? featuredBattle.human.answer
+      : featuredBattle.ai.answer;
+  };
+
+  const revealFor = (slot: AnswerSlot) => {
+    if (!slotAssignment) {
+      return { label: `Option ${slot}`, accent: "human" as SlotSide };
+    }
+    const side = slotAssignment[slot];
+    const name =
+      side === "human" ? featuredBattle.human.name : featuredBattle.ai.name;
+    const type = side === "human" ? "Human" : "AI";
+    return {
+      label: `Option ${slot} = ${type} · ${name}`,
+      accent: side as SlotSide,
+    };
+  };
+
+  const handleChoose = (slot: AnswerSlot) => {
+    setPicked(slot);
+    setRevealed(true);
+  };
+
+  const pickedStronger = picked === crowdFavorite;
+
   return (
-    <Section id="featured" className="relative overflow-hidden">
+    <Section id="featured" className="relative overflow-hidden" flow={false}>
       <div
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0"
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(74,222,128,0.04) 0%, transparent 70%)",
+            "radial-gradient(ellipse 55% 42% at 50% 45%, rgba(74,222,128,0.04) 0%, transparent 72%)",
         }}
       />
 
       <FadeIn>
         <div className="relative mx-auto max-w-3xl text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted">
-            Spotlight duel
-          </p>
-          <h2 className="mt-4 font-display text-3xl font-extrabold uppercase tracking-tight text-text-primary sm:text-4xl">
-            Tonight&apos;s front
+          <h2 className="font-display text-3xl font-extrabold uppercase tracking-tight text-text-primary sm:text-4xl">
+            Today&apos;s challenge
           </h2>
-          <p className="mt-3 text-sm text-text-muted">
-            A live prompt from the creativity front — cast your vote.
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-text-muted">
+            Choose the stronger answer. Identities are revealed after voting.
           </p>
         </div>
       </FadeIn>
 
-      <FadeIn delay={0.12} className="relative mx-auto mt-14 max-w-3xl px-2">
-        <p className="text-center font-mono text-[10px] uppercase tracking-[0.28em] text-human/80">
-          {featuredBattle.category}
-        </p>
-        <p className="mx-auto mt-6 max-w-2xl text-center font-display text-xl font-extrabold uppercase leading-snug text-text-primary sm:text-2xl">
-          {featuredBattle.prompt}
-        </p>
+      <FadeIn delay={0.1} className="relative mx-auto mt-8 max-w-3xl px-2 sm:mt-10">
+        {!slotAssignment ? (
+          <p className="text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
+            Loading challenge…
+          </p>
+        ) : (
+          <>
+            <p className="text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted/80">
+              {featuredBattle.category}
+            </p>
 
-        <div
-          className="mx-auto mt-10 h-px max-w-md opacity-40"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(74,222,128,0.35), rgba(245,245,245,0.1), rgba(96,165,250,0.35))",
-          }}
-        />
+            <p className="mx-auto mt-6 max-w-2xl text-center font-display text-2xl font-extrabold uppercase leading-snug text-text-primary sm:text-3xl md:text-4xl">
+              {featuredBattle.prompt}
+            </p>
 
-        <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-10">
-          <AnswerColumn
-            type="human"
-            name={featuredBattle.human.name}
-            answer={featuredBattle.human.answer}
-            percent={humanPercent}
-            votes={featuredBattle.human.votes}
-            selected={vote === "human"}
-            onVote={() => setVote("human")}
-          />
-          <AnswerColumn
-            type="ai"
-            name={featuredBattle.ai.name}
-            answer={featuredBattle.ai.answer}
-            percent={aiPercent}
-            votes={featuredBattle.ai.votes}
-            selected={vote === "ai"}
-            onVote={() => setVote("ai")}
-          />
-        </div>
+            <div
+              className="mx-auto mt-8 h-px max-w-lg opacity-35"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(74,222,128,0.35), rgba(245,245,245,0.1), rgba(96,165,250,0.35))",
+              }}
+            />
 
-        <AnimatePresence>
-          {vote && (
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="mt-10 text-center font-mono text-[11px] text-text-muted"
-            >
-              Vote recorded —{" "}
-              <span className="text-human">{humanPercent}%</span> side with the
-              human across {totalVotes.toLocaleString()} votes.
-            </motion.p>
-          )}
-        </AnimatePresence>
+            <div className="mt-8 sm:mt-10">
+              <AnimatePresence mode="wait">
+                {!revealed ? (
+                  <motion.div
+                    key="vote"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <BattleVersusLayout
+                      left={
+                        <BlindOptionColumn
+                          slot="A"
+                          answer={answerFor("A")}
+                          selected={picked === "A"}
+                          voted={false}
+                          onChoose={() => handleChoose("A")}
+                        />
+                      }
+                      right={
+                        <BlindOptionColumn
+                          slot="B"
+                          answer={answerFor("B")}
+                          selected={picked === "B"}
+                          voted={false}
+                          onChoose={() => handleChoose("B")}
+                        />
+                      }
+                    />
+                  </motion.div>
+                ) : (
+                  picked && (
+                    <motion.div
+                      key="reveal"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <p className="text-center font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted">
+                        Identities revealed
+                      </p>
+                      <h3 className="mt-3 text-center font-display text-2xl font-extrabold uppercase text-text-primary sm:text-3xl">
+                        {pickedStronger
+                          ? "You called the stronger answer"
+                          : "You went against the crowd"}
+                      </h3>
 
-        <div className="mt-14 text-center">
-          <a
-            href="#challenge"
-            className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted transition-colors hover:text-human"
-          >
-            Enter the full challenge →
-          </a>
-        </div>
+                      <div className="mt-8 sm:mt-10">
+                        <BattleVersusLayout
+                          left={
+                            <BlindOptionColumn
+                              slot="A"
+                              answer={answerFor("A")}
+                              selected={picked === "A"}
+                              voted
+                              onChoose={() => {}}
+                              revealLabel={revealFor("A").label}
+                              revealAccent={revealFor("A").accent}
+                            />
+                          }
+                          right={
+                            <BlindOptionColumn
+                              slot="B"
+                              answer={answerFor("B")}
+                              selected={picked === "B"}
+                              voted
+                              onChoose={() => {}}
+                              revealLabel={revealFor("B").label}
+                              revealAccent={revealFor("B").accent}
+                            />
+                          }
+                        />
+                      </div>
+
+                      <div className="mt-10 space-y-8 sm:mt-12 sm:space-y-10">
+                        <CrowdPreference
+                          optionAPercent={optionAPercent}
+                          optionBPercent={optionBPercent}
+                          totalVotes={totalVotes}
+                        />
+                        <OutthinkScore
+                          score={mockOutthinkScore.score}
+                          total={mockOutthinkScore.total}
+                        />
+                      </div>
+                    </motion.div>
+                  )
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-10 text-center sm:mt-12">
+              <a
+                href="#challenge"
+                className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted transition-colors hover:text-human"
+              >
+                {revealed ? "Next challenge →" : "Can you outthink again? →"}
+              </a>
+            </div>
+          </>
+        )}
       </FadeIn>
     </Section>
-  );
-}
-
-function AnswerColumn({
-  type,
-  name,
-  answer,
-  percent,
-  votes,
-  selected,
-  onVote,
-}: {
-  type: "human" | "ai";
-  name: string;
-  answer: string;
-  percent: number;
-  votes: number;
-  selected: boolean;
-  onVote: () => void;
-}) {
-  const isHuman = type === "human";
-
-  return (
-    <div className="text-left">
-      <p
-        className={`font-mono text-[10px] uppercase tracking-[0.24em] ${
-          isHuman ? "text-human" : "text-ai"
-        }`}
-      >
-        {isHuman ? "Human" : "AI"} · {name}
-      </p>
-      <p
-        className={`mt-4 border-l-2 pl-5 font-mono text-sm leading-relaxed sm:text-[15px] ${
-          isHuman ? "border-human text-human/90" : "border-ai text-ai/90"
-        }`}
-      >
-        {answer}
-      </p>
-
-      <div className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
-        <span>{percent}% crowd</span>
-        <span className="tabular-nums">{votes.toLocaleString()} votes</span>
-      </div>
-
-      <div className="mt-2 h-px w-full bg-border">
-        <motion.div
-          className={`h-px ${isHuman ? "bg-human" : "bg-ai"}`}
-          initial={{ width: 0 }}
-          whileInView={{ width: `${percent}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </div>
-
-      <button
-        type="button"
-        onClick={onVote}
-        className={`mt-6 w-full border px-4 py-3 font-mono text-[10px] uppercase tracking-[0.22em] transition-all duration-300 ${
-          selected
-            ? isHuman
-              ? "border-human/50 text-human"
-              : "border-ai/50 text-ai"
-            : "border-border text-text-muted hover:border-border-hover hover:text-text-primary"
-        }`}
-      >
-        {selected ? "Voted" : `Side with ${isHuman ? "human" : "AI"}`}
-      </button>
-    </div>
   );
 }
