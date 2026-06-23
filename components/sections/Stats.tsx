@@ -50,7 +50,7 @@ function AnimatedNumber({
 
 export function Stats() {
   return (
-    <Section className="border-y border-border bg-background-secondary/50">
+    <Section id="stats" className="border-y border-border bg-background-secondary/50">
       <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
         {stats.map((stat, i) => (
           <FadeIn key={stat.label} delay={i * 0.1}>

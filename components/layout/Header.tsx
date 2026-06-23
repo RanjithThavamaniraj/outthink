@@ -1,25 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 
-const navLinks = [
-  { label: "Battles", href: "#featured" },
-  { label: "Categories", href: "#categories" },
-  { label: "Leaderboard", href: "#leaderboard" },
-];
+const navLinks = [{ label: "Leaderboard", href: "#leaderboard" }];
 
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}

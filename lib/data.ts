@@ -42,6 +42,49 @@ export const categories = [
   },
 ] as const;
 
+export const trendingChallenges = [
+  {
+    id: "t1",
+    category: "Logic",
+    title: "Paradox Ladder #882",
+    detail: "Humans lead by 14pts · 2m ago",
+    side: "human" as const,
+    icon: "◇",
+  },
+  {
+    id: "t2",
+    category: "Creativity",
+    title: "Brand Sprint Finals",
+    detail: "AI closing gap · live now",
+    side: "ai" as const,
+    icon: "✦",
+  },
+  {
+    id: "t3",
+    category: "Predictions",
+    title: "Market Call Q2",
+    detail: "Humans ahead · 18pts",
+    side: "human" as const,
+    icon: "◎",
+  },
+  {
+    id: "t4",
+    category: "Writing",
+    title: "Opening Line Duel",
+    detail: "GPT-4o won last round",
+    side: "ai" as const,
+    icon: "¶",
+  },
+  {
+    id: "t5",
+    category: "Business Ideas",
+    title: "Startup Pitch Challenge",
+    detail: "847 votes cast",
+    side: "human" as const,
+    icon: "△",
+  },
+] as const;
+
 export const featuredBattle = {
   category: "Creativity",
   prompt: "Rebrand a declining neighborhood bookstore for the digital age.",

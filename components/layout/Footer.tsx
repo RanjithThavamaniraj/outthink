@@ -10,7 +10,8 @@ export function Footer() {
             className="footer-wordmark font-display select-none text-center font-extrabold uppercase tracking-tight"
             aria-label="OUTTHINK"
           >
-            OUTTHINK
+            <span className="footer-wordmark-out">OUT</span>
+            <span className="footer-wordmark-think">THINK</span>
           </h2>
         </div>
       </Container>

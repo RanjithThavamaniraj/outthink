@@ -72,7 +72,13 @@ function BlinkingCursor({ variant }: { variant: "human" | "ai" }) {
   );
 }
 
-export function TypingDuel({ className = "" }: { className?: string }) {
+export function TypingDuel({
+  className = "",
+  bare = false,
+}: {
+  className?: string;
+  bare?: boolean;
+}) {
   const [pairIndex, setPairIndex] = useState(0);
   const [prompt, setPrompt] = useState<string>(typingPairs[0].prompt);
   const [humanText, setHumanText] = useState("");
@@ -122,11 +128,21 @@ export function TypingDuel({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`rounded-xl border border-border bg-[rgba(255,255,255,0.02)] p-6 text-left ${className}`}
+      className={
+        bare
+          ? `text-left ${className}`
+          : `rounded-xl border border-border bg-[rgba(255,255,255,0.02)] p-6 text-left ${className}`
+      }
       aria-live="polite"
       aria-label="Live typing duel between human and AI"
     >
-      <p className="mb-4 text-center font-mono text-[11px] uppercase tracking-widest text-text-muted">
+      <p
+        className={`mb-4 text-center font-mono uppercase tracking-widest ${
+          bare
+            ? "text-[10px] text-text-muted/55"
+            : "text-[11px] text-text-muted"
+        }`}
+      >
         {prompt}
       </p>
 
@@ -138,9 +154,13 @@ export function TypingDuel({ className = "" }: { className?: string }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="grid grid-cols-[1fr_1px_1fr] gap-0"
+            className={
+              bare
+                ? "grid grid-cols-2 gap-10 sm:gap-16"
+                : "grid grid-cols-[1fr_1px_1fr] gap-0"
+            }
           >
-            <div className="pr-4 sm:pr-6">
+            <div className={bare ? "" : "pr-4 sm:pr-6"}>
               <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-human">
                 Human
               </p>
@@ -150,9 +170,9 @@ export function TypingDuel({ className = "" }: { className?: string }) {
               </p>
             </div>
 
-            <div className="typing-duel-divider w-px" />
+            {!bare && <div className="typing-duel-divider w-px" />}
 
-            <div className="pl-4 sm:pl-6">
+            <div className={bare ? "" : "pl-4 sm:pl-6"}>
               <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-ai">
                 AI
               </p>
