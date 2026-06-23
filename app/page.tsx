@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
-import { Categories } from "@/components/sections/Categories";
+import { ChallengeSection } from "@/components/sections/Challenge";
 import { FeaturedBattle } from "@/components/sections/FeaturedBattle";
 import { Leaderboard } from "@/components/sections/Leaderboard";
 
@@ -15,7 +15,7 @@ export default function Home() {
       <main className="relative z-[1] flex-1">
         <Hero />
         <Stats />
-        <Categories />
+        <ChallengeSection />
         <FeaturedBattle />
         <Leaderboard />
       </main>
