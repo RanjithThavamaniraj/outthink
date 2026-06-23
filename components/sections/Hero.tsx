@@ -33,10 +33,10 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
 
-      <div className="relative z-10 flex min-h-[calc(100vh-7rem)] flex-col items-center px-6 py-12 text-center sm:px-10">
-        <div className="flex w-full max-w-3xl flex-1 flex-col items-center justify-center">
+      <div className="relative z-10 flex min-h-[calc(100vh-7rem)] flex-col items-center justify-center px-6 py-8 text-center sm:px-10 sm:py-10">
+        <div className="flex w-full max-w-3xl flex-col items-center">
           <FadeIn delay={0.15}>
-            <h1 className="relative max-w-5xl px-2 py-10 font-display text-4xl font-extrabold uppercase leading-[1.02] tracking-tight sm:px-6 sm:py-14 sm:text-5xl md:py-16 md:text-6xl lg:py-20 lg:text-7xl xl:text-[5.25rem]">
+            <h1 className="relative max-w-5xl px-2 py-8 font-display text-4xl font-extrabold uppercase leading-[1.02] tracking-tight sm:px-6 sm:py-10 sm:text-5xl md:py-12 md:text-6xl lg:text-7xl xl:text-[5.25rem]">
               <span className="text-text-primary/75">Can You </span>
               <span className="hero-title-shimmer relative z-10">Outthink</span>
               <span className="text-text-primary/75"> AI?</span>
@@ -53,17 +53,17 @@ export function Hero() {
 
           <FadeIn
             delay={0.42}
-            className="mt-20 w-full max-w-2xl sm:mt-24 lg:mt-28"
+            className="mt-16 w-full max-w-2xl sm:mt-20 lg:mt-24"
           >
             <TypingDuel bare />
           </FadeIn>
 
           <motion.a
-            href="#stats"
+            href="#challenge"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.58, duration: 1.1 }}
-            className="hero-challenge-invite mt-14 sm:mt-16"
+            className="hero-challenge-invite mt-8 sm:mt-10"
             aria-label="Ready to Outthink?"
           >
             Ready to Outthink?
@@ -71,7 +71,7 @@ export function Hero() {
           </motion.a>
 
           <FadeIn delay={0.62}>
-            <p className="mt-8 max-w-md text-sm leading-relaxed text-text-muted/65 sm:mt-10">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-text-muted/65 sm:mt-4">
               Daily battles between humans and AI. Compete, vote, and prove human
               creativity still matters.
             </p>

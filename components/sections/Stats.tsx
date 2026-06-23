@@ -6,73 +6,62 @@ import { Section } from "@/components/ui/Section";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { stats } from "@/lib/data";
 
-function AnimatedNumber({
-  value,
-  suffix = "",
-  decimals = 0,
-}: {
-  value: number;
-  suffix?: string;
-  decimals?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+function useAnimatedStat(
+  value: number,
+  decimals: number,
+  isInView: boolean,
+) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
     if (!isInView) return;
-
-    const duration = 2000;
+    const duration = 1800;
     const start = performance.now();
-
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplay(value * eased);
       if (progress < 1) requestAnimationFrame(tick);
     };
-
     requestAnimationFrame(tick);
   }, [isInView, value]);
 
-  const formatted =
-    decimals > 0
-      ? display.toFixed(decimals)
-      : Math.floor(display).toLocaleString();
-
-  return (
-    <span ref={ref}>
-      {formatted}
-      {suffix}
-    </span>
-  );
+  if (decimals > 0) return display.toFixed(decimals);
+  return Math.floor(display).toLocaleString();
 }
 
 export function Stats() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+  const humans = useAnimatedStat(stats[0].value, 0, isInView);
+  const battles = useAnimatedStat(stats[1].value, 0, isInView);
+  const winRate = useAnimatedStat(stats[2].value, 1, isInView);
+
   return (
-    <Section id="stats" className="border-y border-border bg-background-secondary/50">
-      <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
-        {stats.map((stat, i) => (
-          <FadeIn key={stat.label} delay={i * 0.1}>
-            <motion.div
-              className="text-center"
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <p className="font-display text-4xl font-bold tracking-tight text-text-primary sm:text-5xl md:text-6xl">
-                <AnimatedNumber
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  decimals={"decimals" in stat ? stat.decimals : 0}
-                />
-              </p>
-              <p className="mt-2 text-sm uppercase tracking-widest text-muted">
-                {stat.label}
-              </p>
-            </motion.div>
-          </FadeIn>
-        ))}
-      </div>
+    <Section id="stats" className="!py-12 sm:!py-14">
+      <FadeIn>
+        <div
+          ref={ref}
+          className="mx-auto max-w-3xl text-center font-mono text-[10px] uppercase tracking-[0.22em] text-text-muted sm:text-[11px] sm:tracking-[0.26em]"
+        >
+          <span className="inline-flex items-center gap-2 text-human/90">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-human" />
+            Live field
+          </span>
+
+          <p className="mt-5 leading-loose text-text-muted/80 sm:mt-6">
+            <span className="text-text-primary/90">{humans}+</span> minds
+            competing
+            <span className="mx-2 text-text-muted/30">·</span>
+            <span className="text-text-primary/90">{battles}+</span> battles
+            fought
+            <span className="mx-2 text-text-muted/30">·</span>
+            humans lead{" "}
+            <span className="text-human">{winRate}%</span>
+          </p>
+        </div>
+      </FadeIn>
     </Section>
   );
 }
