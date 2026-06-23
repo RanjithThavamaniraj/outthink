@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --background-secondary: #0a0a0a;
+  --background-tertiary: #111111;
+  --human: #4ade80;
+  --ai: #60a5fa;
+  --text-primary: #f5f5f5;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --foreground: var(--text-primary);
+  --accent: var(--human);
+  --surface: var(--background-secondary);
+  --surface-elevated: var(--background-secondary);
+  --muted: var(--text-muted);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+  --color-foreground: var(--text-primary);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--human);
+  --color-human: var(--human);
+  --color-ai: var(--ai);
+  --color-surface: var(--background-secondary);
+  --color-surface-elevated: var(--background-secondary);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-syne);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--human) 40%, transparent);
+  color: var(--text-primary);
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll linear infinite;
+}
+
+@keyframes underscore-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes hero-shimmer {
+  0%,
+  88%,
+  100% {
+    background-position: -200% center;
+  }
+  94% {
+    background-position: 200% center;
+  }
+}
+
+.hero-title-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    #4ade80 0%,
+    #86efac 45%,
+    #4ade80 55%,
+    #4ade80 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero-shimmer 10s ease-in-out infinite;
+}
+
+.micro-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.micro-card:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 32px rgba(74, 222, 128, 0.08);
+}
+
+.micro-button-glow {
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.micro-button-glow:hover {
+  box-shadow: 0 0 28px rgba(74, 222, 128, 0.35);
+}
+
+@keyframes live-feed-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.live-feed-track {
+  animation: live-feed-scroll 28s linear infinite;
+}
+
+.mask-feed {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 82%,
+    transparent 100%
+  );
+}
+
+.typing-duel-divider {
+  background: linear-gradient(to bottom, #4ade80, #60a5fa);
+}
+
+.footer-atmosphere {
+  background: #050505;
+}
+
+.footer-smoke {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 60%, rgba(96, 165, 250, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 45% at 80% 40%, rgba(74, 222, 128, 0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  animation: footer-smoke-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes footer-smoke-drift {
+  0% {
+    transform: scale(1) translateX(0);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.06) translateX(-2%);
+    opacity: 1;
+  }
+}
+
+.footer-wordmark {
+  font-size: clamp(3.5rem, 17vw, 13rem);
+  line-height: 0.9;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(245, 245, 245, 0.62) 0,
+    rgba(245, 245, 245, 0.62) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
