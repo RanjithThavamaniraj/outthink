@@ -3,27 +3,24 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
-import { FadeIn } from "@/components/animations/FadeIn";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CategorySelector } from "@/components/challenge/CategorySelector";
-import { BattleView } from "@/components/challenge/BattleView";
-import { useChallengeFlow } from "@/hooks/useChallengeFlow";
+import { BeatAIView } from "@/components/challenge/BeatAIView";
+import { useBeatAIFlow } from "@/hooks/useBeatAIFlow";
 import { challengeService } from "@/lib/services/challenge-service";
 import type { ChallengeCategory } from "@/lib/types/challenge";
 
 export function ChallengeSection() {
   const [categories, setCategories] = useState<ChallengeCategory[]>([]);
-  const {
-    phase,
-    category,
-    battle,
-    stats,
-    voteResult,
-    loading,
-    selectCategory,
-    submitVote,
-    reset,
-    playAgain,
-  } = useChallengeFlow();
+  const flow = useBeatAIFlow();
+  const { phase, category, loading, selectCategory, reset } = flow;
+
+  useEffect(() => {
+    const openCategories = () => reset();
+    window.addEventListener("outthink:open-categories", openCategories);
+    return () =>
+      window.removeEventListener("outthink:open-categories", openCategories);
+  }, [reset]);
 
   useEffect(() => {
     challengeService.getCategories().then(setCategories);
@@ -44,30 +41,24 @@ export function ChallengeSection() {
         }}
       />
 
-      <FadeIn>
-        <div className="relative mx-auto max-w-3xl text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-text-muted">
-            The arena
-          </p>
-          <h2 className="scanline-heading mt-3 font-display font-extrabold uppercase text-text-primary">
-            Pick your battleground
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-text-muted">
-            Five forms of human intelligence. Each front is a different way to
-            challenge AI — foresight, reasoning, creativity, empathy, or wit.
-          </p>
-        </div>
-      </FadeIn>
+      {!inBattle ? (
+        <SectionHeader
+          eyebrow="Beat the AI"
+          title="Pick your battleground"
+          description="Write your answer. Face the model. Find out if you can outthink AI."
+          scanline
+        />
+      ) : null}
 
-      <div className="relative mt-10 sm:mt-12">
+      <div className={`relative ${inBattle ? "" : "mt-8 sm:mt-10"}`}>
         <AnimatePresence mode="wait">
           {!inBattle ? (
             <motion.div
               key="selector"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.4 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
             >
               {categories.length > 0 && (
                 <CategorySelector
@@ -78,34 +69,21 @@ export function ChallengeSection() {
                 />
               )}
               {loading && (
-                <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
-                  Loading battle…
+                <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
+                  Loading challenge…
                 </p>
               )}
             </motion.div>
           ) : (
-            category &&
-            battle &&
-            stats && (
-              <motion.div
-                key="battle"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <BattleView
-                  phase={phase}
-                  category={category}
-                  battle={battle}
-                  stats={stats}
-                  voteResult={voteResult}
-                  onVote={submitVote}
-                  onPlayAgain={playAgain}
-                  onChooseCategory={reset}
-                />
-              </motion.div>
-            )
+            <motion.div
+              key="battle"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <BeatAIView {...flow} categories={categories} />
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

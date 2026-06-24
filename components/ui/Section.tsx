@@ -20,7 +20,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`site-section relative py-12 sm:py-16 lg:py-[4.5rem] ${className}`}
+      className={`site-section relative py-10 sm:py-12 lg:py-14 ${className}`}
     >
       {flow && <div className="section-flow-seam" aria-hidden />}
       <Container className={containerClassName}>{children}</Container>

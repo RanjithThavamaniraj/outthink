@@ -3,14 +3,14 @@
 import { motion } from "framer-motion";
 
 type CrowdPreferenceProps = {
-  optionAPercent: number;
-  optionBPercent: number;
+  humanPercent: number;
+  aiPercent: number;
   totalVotes?: number;
 };
 
 export function CrowdPreference({
-  optionAPercent,
-  optionBPercent,
+  humanPercent,
+  aiPercent,
   totalVotes,
 }: CrowdPreferenceProps) {
   return (
@@ -26,12 +26,12 @@ export function CrowdPreference({
 
       <div className="mt-6 space-y-3">
         <p className="font-display text-lg font-extrabold uppercase tracking-tight text-text-primary sm:text-xl">
-          <span className="tabular-nums">{optionAPercent}%</span> preferred{" "}
-          <span className="text-text-muted/80">Option A</span>
+          <span className="tabular-nums text-human">{humanPercent}%</span> backed{" "}
+          <span className="text-human/80">Human</span>
         </p>
         <p className="font-display text-lg font-extrabold uppercase tracking-tight text-text-primary sm:text-xl">
-          <span className="tabular-nums">{optionBPercent}%</span> preferred{" "}
-          <span className="text-text-muted/80">Option B</span>
+          <span className="tabular-nums text-ai">{aiPercent}%</span> backed{" "}
+          <span className="text-ai/80">AI</span>
         </p>
       </div>
 
@@ -40,12 +40,12 @@ export function CrowdPreference({
           <motion.div
             className="frontier-spectrum-human"
             initial={{ width: 0 }}
-            animate={{ width: `${optionAPercent}%` }}
+            animate={{ width: `${humanPercent}%` }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           />
           <div
             className="frontier-spectrum-marker"
-            style={{ left: `${optionAPercent}%` }}
+            style={{ left: `${humanPercent}%` }}
           />
         </div>
       </div>

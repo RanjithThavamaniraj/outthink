@@ -16,11 +16,11 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "OUTTHINK — Can You Outthink AI?",
   description:
-    "Daily battles between humans and artificial intelligence. Compete, vote, climb the leaderboard and prove that human creativity still matters.",
+    "Daily battles between humans and artificial intelligence. Compete head-to-head against AI and prove that human creativity still matters.",
   openGraph: {
     title: "OUTTHINK — Can You Outthink AI?",
     description:
-      "Daily battles between humans and artificial intelligence. Compete, vote, and climb the leaderboard.",
+      "Daily battles between humans and artificial intelligence. Compete head-to-head against AI.",
     type: "website",
   },
 };

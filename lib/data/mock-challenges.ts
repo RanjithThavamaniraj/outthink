@@ -1,6 +1,7 @@
 import type {
   CategoryId,
   CategoryStatistics,
+  Challenge,
   ChallengeBattle,
   ChallengeCategory,
 } from "@/lib/types/challenge";
@@ -162,35 +163,50 @@ export const MOCK_BATTLES: ChallengeBattle[] = [
   },
 ];
 
+export const MOCK_CHALLENGES: Challenge[] = MOCK_BATTLES.map(
+  ({ id, categoryId, prompt }) => ({ id, categoryId, prompt }),
+);
+
+/** Mock AI answers keyed by challenge id — swap for OpenAI API later. */
+export const MOCK_AI_RESPONSES: Record<string, string> = Object.fromEntries(
+  MOCK_BATTLES.map((battle) => {
+    const aiText =
+      battle.humanAnswer === "A" ? battle.answerB : battle.answerA;
+    return [battle.id, aiText];
+  }),
+);
+
+export const AI_MODEL_LABEL = "GPT-4.1";
+
 export const MOCK_CATEGORY_STATS: Record<CategoryId, CategoryStatistics> = {
   "sports-prediction": {
     categoryId: "sports-prediction",
-    humanWinPercent: 56,
-    aiWinPercent: 44,
+    humanWinPercent: 44,
+    aiWinPercent: 56,
     totalVotes: 14280,
   },
   mystery: {
     categoryId: "mystery",
-    humanWinPercent: 53,
-    aiWinPercent: 47,
+    humanWinPercent: 46,
+    aiWinPercent: 54,
     totalVotes: 11840,
   },
   "impossible-ideas": {
     categoryId: "impossible-ideas",
-    humanWinPercent: 61,
-    aiWinPercent: 39,
+    humanWinPercent: 63,
+    aiWinPercent: 37,
     totalVotes: 13120,
   },
   "human-insight": {
     categoryId: "human-insight",
-    humanWinPercent: 58,
-    aiWinPercent: 42,
+    humanWinPercent: 66,
+    aiWinPercent: 34,
     totalVotes: 10950,
   },
   humor: {
     categoryId: "humor",
-    humanWinPercent: 64,
-    aiWinPercent: 36,
+    humanWinPercent: 65,
+    aiWinPercent: 35,
     totalVotes: 12400,
   },
 };
